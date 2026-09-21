@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Viktorija Đurđa</title>
+        <link rel="icon" type="image/x-icon" href="bitmap.png">
+        <style>
+            /* --- Generalno --- */
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                background-color: #a7cacb;
+                margin: 0;
+                line-height: 1.6;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            main {
+                flex: 1;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check {
+                display: none;
+            }
+            .dark-gumb {
+                background-color: #006666;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .dark-gumb:hover {
+                background-color: #004444;
+            }
+            .dark-gumb::before {
+                content: "Tamni način";
+            }
+            #dark-check:checked + .page .dark-gumb::before {
+                content: "Svijetli način";
+            }
+
+            /* --- Navigacijska traka --- */
+            .navbar {
+                display: flex;
+                align-items: center;
+                background-color: #5f9ea0;
+                padding: 15px 40px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            .navbar a{
+                color: white;
+                text-decoration: none;
+            }
+            .navbar a:hover {
+                color: #345786;
+            }
+            .ime {
+                font-weight: bold;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+            .desno {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+                font-weight: bold;
+                gap: 20px;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #e0eaea;
+                min-width: 160px;
+                border-radius: 5px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                margin-top: 5px;
+            }
+            .dropdown-content a {
+                color: #5f9ea0;
+                display: block;
+                padding: 10px 15px;
+                font-weight: normal;
+                text-shadow: none;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            /* --- Tražilica --- */
+            .trazilica {
+                max-width: 600px;
+                width: 90%;
+                margin: 30px auto;
+                display: flex;
+            }
+            .trazilica input {
+                flex: 1;
+                padding: 10px;
+                border: 2px solid #006666;
+                border-right: none;
+                border-radius: 25px 0 0 25px;
+                outline: none;
+            }
+            .trazilica button {
+                padding: 10px 15px;
+                border: 2px solid #006666;
+                background: #006666;
+                border-radius: 0 25px 25px 0;
+                cursor: pointer;
+            }
+            .trazilica button img {
+                width: 20px;
+                height: auto;
+                vertical-align: middle;
+            }
+            .trazilica button:hover {
+                background: #004444;
+            }
+
+            /* --- Početna --- */
+            .naslov-projekt {
+                text-align: center;
+                margin: 20px 0;
+                font-size: 36px;
+                color: #005f60;
+            }
+            .projekt-obj {
+                text-align: center;
+                max-width: 800px;
+                margin: 0 auto 50px;
+            }
+            .foto-content, .gimp-content, .inkscape-content, .figma-content, .github-content {
+                background: #c7dcdc;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin: 40px auto;
+                max-width: 800px;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                transition: transform 0.3s ease;
+            }
+            .logo{
+                width: 40px;
+                height: auto;
+                vertical-align: middle;
+                margin-left: 8px;
+                transition: transform 0.3s ease;
+            }
+            .foto-content img, .gimp-content img, .inkscape-content img, .figma-content img, .github iframe {
+                max-width: 300px;
+                height: auto;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+            .foto-tekst, .gimp-text, .inkscape-text, .figma-text, .github-text {
+                max-width: 100%;
+                text-align: left;
+            }
+            .foto-naslov a, .gimp-naslov a, .inkscape-naslov a, .figma-naslov a, .github-naslov {
+                text-decoration: none;
+                color: #006666;
+                margin-bottom: 15px;
+            }
+            .foto-tekst ul {
+                margin-left: 15px;
+                color: #006666;
+            }
+            .foto-tekst p,.gimp-text p, .inkscape-text p, .figma-text p, .github-text p, #githubopis a {
+                text-decoration: none;
+                color: #006666;
+            }
+            .foto-naslov a:hover, .gimp-naslov a:hover, .inkscape-naslov a:hover, .figma-naslov a:hover, #githubopis a:hover {
+                color: #182874;
+                font-weight: 600;
+            }
+
+            /* --- Footer --- */
+            .footer {
+                background-color: #5f9ea0;
+                color: white;
+                padding: 40px;
+            }
+            .footer-content {
+                display: flex;
+                justify-content: center;
+                gap: 100px;
+                flex-wrap: wrap;
+            }
+            .footer-content p{
+                margin-bottom: 15px;
+            }
+            .footer-content a{
+                display: block;
+                color: white;
+                text-decoration: none;
+            }
+            .footer-content a:hover {
+                color: #345786;
+            }
+            .footer-desno ul {
+                list-style: square;
+                padding: 0;
+            }
+            .footer-desno li {
+                margin-bottom: 10px;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check:checked ~ .page {
+                background: #003e3f;
+                color: #e0e0e0
+            }
+            #dark-check:checked ~ .page .navbar,
+            #dark-check:checked ~ .page .footer {
+                background-color: #00292a;
+                color: #e0e0e0;
+            }
+            #dark-check:checked ~ .page .navbar .ime:hover,
+            #dark-check:checked ~ .page .navbar #projekti:hover,
+            #dark-check:checked ~ .page .navbar #about:hover,
+            #dark-check:checked ~ .page .footer a:hover,
+            #dark-check:checked ~ .page #githubopis a:hover {
+                color: #8fbbbc
+            }
+            #dark-check:checked ~ .page .foto-tekst p,
+            #dark-check:checked ~ .page .foto-tekst ul,
+            #dark-check:checked ~ .page .gimp-text p,
+            #dark-check:checked ~ .page .inkscape-text p,
+            #dark-check:checked ~ .page .figma-text p,
+            #dark-check:checked ~ .page .github-text p{
+                color: #c7ddde;
+            }
+            #dark-check:checked ~ .page .naslov-projekt,
+            #dark-check:checked ~ .page .foto-naslov a,
+            #dark-check:checked ~ .page .gimp-naslov a,
+            #dark-check:checked ~ .page .inkscape-naslov a,
+            #dark-check:checked ~ .page .figma-naslov a
+            #dark-check:checked ~ .page .github-content a
+            #dark-check:checked ~ .page #githubopis a {
+                color: #6d999a;
+            }
+            #dark-check:checked ~ .page .foto-naslov a:hover,
+            #dark-check:checked ~ .page .gimp-naslov a:hover,
+            #dark-check:checked ~ .page .inkscape-naslov a:hover,
+            #dark-check:checked ~ .page .figma-naslov a:hover,
+            #dark-check:checked ~ .page .github-naslov a:hover {
+                color: #e0e0e0;
+            }
+            #dark-check:checked ~ .page .foto-content,
+            #dark-check:checked ~ .page .gimp-content,
+            #dark-check:checked ~ .page .inkscape-content,
+            #dark-check:checked ~ .page .figma-content,
+            #dark-check:checked ~ .page .github-content {
+                background: #002a2b;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+            /* --- mobitel --- */
+            @media (max-width: 768px) {
+                .navbar {
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 10px 15px;
+                }
+                .ime {
+                    font-size: 14px;
+                }
+                .desno {
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 10px
+                }
+                .desno a {
+                    font-size: 14px;
+                    margin-left: 5px;
+                }
+                .dark-gumb {
+                    padding: 6px 10px;
+                    font-size: 12px;
+                }
+                .dropdown-content {
+                    right: 0;
+                    left: auto;
+                }
+                .trazilica {
+                    width: 90%;
+                    display: flex;
+                    flex-direction: row;
+                }
+                .trazilica input {
+                    flex: 1;
+                    border-radius: 25px 0 0 25px;
+                    border-right: none;
+                }
+                .trazilica button {
+                    border-radius: 0 25px 25px 0;
+                    width: auto;
+                }
+                .foto-content, .gimp-content, .inkscape-content, .figma-content, .github-content {
+                    flex-direction: column;
+                    text-align: center;
+                    padding: 15px;
+                }
+                .foto-content img,
+                .gimp-content img,
+                .inkscape-content img,
+                .figma-content img,
+                .github iframe {
+                    max-width: 100%;
+                }
+
+                .foto-tekst,
+                .gimp-text,
+                .inkscape-text,
+                .figma-text,
+                .github-text {
+                    max-width: 100%;
+                    text-align: center;
+                }
+                .naslov-projekt {
+                    font-size: 24px;
+                    padding: 0 10px;
+                }
+                .projekt-obj {
+                    padding: 0 15px;
+                }
+                .footer-content {
+                    flex-direction: row;
+                    gap: 20px;
+                    text-align: center;
+                    font-size: 65%;
+                }
+            }
+    </style>
+    </head>
+    <body>
+        <input type="checkbox" id="dark-check">
+        <div class="page">
+            <nav class="navbar">
+                <a href="main.html" class="ime">Viktorija Đurđa</a>
+                <div class="desno">
+                    <label for="dark-check" class="dark-gumb"></label>
+                    <div class="dropdown">
+                        <a href="#" id="projekti">Projekti ▾</a>
+                        <div class="dropdown-content">
+                            <a href="foto.html">Fotografiranje</a>
+                            <a href="gimp.html">GIMP</a>
+                            <a href="inkscape.html">Inkscape</a>
+                            <a href="figma.html">Figma</a>
+                        </div>
+                    </div>
+                    <a href="about.html" id="about">About</a>
+                </div>
+            </nav>
+            <div class="trazilica">
+                <input type="text" id="trazilicaInput" placeholder="Pretraži...">
+                <button>
+                    <img src="search1.png" alt="Traži">
+                </button>
+            </div>
+            <h1 class="naslov-projekt">Multimedijalni sustavi</h1>
+            <p class="projekt-obj">Ova stranica je izrađena kao projekt za kolegij Multimedijalni sustavi.
+            <br> Ispod možete vidjeti projekte koje sam izradila za vježbe ovog kolegija.
+            <br> Ako kliknete na naslove projekta ili na dropdown izbornik u gornjem dijelu stranice, moći ćete se prebaciti na pojedine projekte gdje su pojašnjenja.</p>
+            <div class="foto search-item">
+                <div class="foto-content">
+                    <img src="foto/fokus.jpg" alt="Primjer fokusa u fotografiranju.">
+                    <div class="foto-tekst">
+                        <h2 class="foto-naslov">
+                        <a href="foto.html">Fotografiranje</a>
+                        </h2>
+                        <p>Zadatak gdje smo trebali predati 3 fotografije koje koriste sljedeće tehnike:</p>
+                        <ul>
+                            <li>Ekspozicija - duga i kratka</li>
+                            <li>Fokus</li>
+                            <li>ISO ili EV</li>
+                            <li>Balans bijele boje</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="gimp search-item">
+                <div class="gimp-content">
+                    <img id="gimpmajca" src="gimp/gimp.png" alt="Slika majce kreirane u GIMP programu.">
+                <div class="gimp-text">
+                    <h2 class="gimp-naslov">
+                        <a href="gimp.html">GIMP</a>
+                        <img src="gimp/The_GIMP_icon.png" alt="GIMP logo" class="logo">
+                    </h2>
+                    <p id="gimpopis">Ova majca je izrađena u GIMP programu. Na majci je slika The Starry Night slikara Vincenta van Gogha uz citat iz njegovog pisma bratu Theu iz 1888.</p>
+                    <p id="gimpcitat">"Looking at the stars always makes me dream. Why, I ask myself, shouldn't the shining dots of the sky be as accessible as the black dots on the map of France? Just as we take a train to get to Tarascon or Rouen, we take death to reach a star."</p>
+                </div>
+                </div>
+            </div>
+            <div id="Inkscape" class="search-item">
+                <div class="inkscape-content">
+                    <img id="inkscapebird" src="inkscape/inkscape.png" alt="Logotip ptice uređen u Inkscape programu.">
+                    <div class="inkscape-text">
+                        <h2 class="inkscape-naslov">
+                            <a href="inkscape.html">Inkscape</a>
+                            <img src="inkscape/Inkscape_Logo.png" class="logo">
+                        </h2>
+                        <p id="inkspaceopis">Ovaj logotip ptice je uređen u Inkscape programu. Riječ iznad logotipa je πουλί (poulí) što na Grčkom znači ptica.</p>
+                    </div>
+                    </div>
+            </div>
+            <div id="Figma" class="search-item">
+                <div class="figma-content">
+                    <img src="figma/Primjer mobilne aplikacije figma.png" alt="Primjer mobilne aplikacije u programu Figma">
+                    <div class="figma-text">
+                        <h2 class ="figma-naslov">
+                            <a href="figma.html">Figma</a>
+                            <img src="figma/Figma-logo.png" alt="Figma logo" class="logo">
+                        </h2>
+                        <p id="figmaopis">Ovo je primjer mobilne aplikacije izrađene u programu Figma.<br>Može se vidjeti stranica za prijavu ili registraciju. Početna stranica aplikacije koja prikazuje moguće igre koje sadržuje aplikacija (Sudoku, Killer Sudoku, Nonogram, Number Match, Kriptogram, Tetris, itd.).<br> Kroz početnu stranicu može se dalje pristupiti postavke, dnevni izazovi, profil i jedan primjer Sudoku igre u 'Easy' teškoći. <br> Ako se klikne 'Hint' igra se kompletno završi (sa točnim rješenjem!)</p>
+                    </div>
+                </div>
+            </div>
+            <div id="github" class="search-item">
+                <div class="github-content">
+                    <iframe src="https://vdurda-mss-github.netlify.app/"></iframe>
+                    <div class="github-text">
+                        <h2 class ="github-naslov">
+                            Github i Netlify
+                            <img src="github-logo.webp" alt="Github logo" class="logo">
+                            <img src="netlifly-logo.webp" alt="Netlify logo" class="logo">
+                        </h2>
+                        <p id="githubopis">Ovaj projekt je stranica o mojim najdražim umjetničkim djelima. Svako djelo ima svoj opis i malo o autoru (ako je poznat.)<br>Također za svrhu ovog projekta izradila sam 'reklame' u Canvi. Projekt je prvo napisan sa html, css, i javascript-om u VS Codu, zatim prebačen na <a href="https://github.com/vdurda-eng/mms-netlify-github-projekt" target="_blank">GitHub respiratory</a>, koji je povezan sa Netlify-em.<br>Za više detalja možete posjetiti <a href="https://vdurda-mss-github.netlify.app/about" target="_blank">'About'</a> sekciju na toj stranici.</p>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-lijevo">
+                        <p>Multimedijalni sustavi</p>
+                        <p>Visual Studio Code</p>
+                        <p>HTML</p>
+                        <p>CSS</p>
+                        <p>JavaScript</p>
+                    </div>
+                    <div class="footer-desno">
+                        <p>Projekti:</p>
+                        <ul>
+                            <li><a href="foto.html">Fotografiranje</a></li>
+                            <li><a href="gimp.html">GIMP</a></li>
+                            <li><a href="inkscape.html">Inkscape</a></li>
+                            <li><a href="figma.html">Figma</a></li>
+                            <li><a href="#github">Github/Netlify</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-sredina">
+                        <p>Napravila:</p>
+                        <p>Viktorija Đurđa</p>
+                        <p>vdurda@unipu.hr</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const input = document.getElementById("trazilicaInput");
+            const items = document.querySelectorAll(".search-item");
+
+            const noResult = document.createElement("p");
+            noResult.textContent = "Nema rezultata.";
+            noResult.style.textAlign = "center";
+            noResult.style.color = "#006666";
+            noResult.style.display = "none";
+            document.querySelector(".page").insertBefore(noResult, document.querySelector(".trazilica").nextSibling)
+
+            const button = document.querySelector(".trazilica button");
+
+            function highlightText(item, search) {
+            const regex = new RegExp(`(${search})`, "gi");
+            const textElems = item.querySelectorAll("p, h2, li");
+            textElems.forEach(elem => {
+                elem.innerHTML = elem.textContent.replace(regex, `<span style="background-color: #6d999a;">$1</span>`);
+                });
+            }
+
+            function resetHighlight(item) {
+                const spans = item.querySelectorAll("span");
+                spans.forEach(span => {
+                    span.replaceWith(document.createTextNode(span.textContent));
+                });
+            }
+
+            function filterItems() {
+                const value = input.value.trim().toLowerCase();
+                let found = false;
+
+                items.forEach(item => {
+                    resetHighlight(item);
+
+                    if (value === "") {
+                        item.style.display = "block";
+                    } else if (item.textContent.toLowerCase().includes(value) && value !== "") {
+                        item.style.display = "block";
+                        highlightText(item, value);
+                        found = true;
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+
+                noResult.style.display = found || value === "" ? "none" : "block";
+            }
+
+            input.addEventListener("keyup", function(e) {
+                filterItems();
+                if (e.key === "Enter") {
+                    button.click();
+                }
+        });
+
+            button.addEventListener("click", filterItems);
+        })
+            input.addEventListener("keyup", function() {
+                let value = this.value.toLowerCase();
+
+                items.forEach(function(item) {
+                    if (item.textContent.toLowerCase().includes(value)) {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+            });
+    </script>
+    </body>
