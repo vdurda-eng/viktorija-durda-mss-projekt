@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Viktorija Đurđa | Figma</title>
+        <link rel="icon" type="image/x-icon" href="bitmap.png">
+        <style>
+            /* --- Generalno --- */
+            *{
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                background-color: #a7cacb;
+                margin: 0;
+                line-height: 1.6;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check {
+                display: none;
+            }
+            .dark-gumb {
+                background-color: #006666;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .dark-gumb:hover {
+                background-color: #004444;
+            }
+            .dark-gumb::before {
+                content: "Tamni način";
+            }
+            #dark-check:checked + .page .dark-gumb::before {
+                content: "Svijetli način";
+            }
+
+            /* --- Navigacijska traka --- */
+            .navbar {
+                display: flex;
+                align-items: center;
+                background-color: #5f9ea0;
+                padding: 15px 40px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            .navbar a{
+                color: white;
+                text-decoration: none;
+            }
+            .navbar a:hover {
+                color: #345786;
+            }
+            .ime {
+                font-weight: bold;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+            .desno {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+                font-weight: bold;
+                gap: 20px;
+            }
+            .desno a {
+                margin-left: 15px;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #e0eaea;
+                min-width: 160px;
+                border-radius: 5px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                margin-top: 5px;
+            }
+            .dropdown-content a {
+                color: #5f9ea0;
+                display: block;
+                padding: 10px 15px;
+                font-weight: normal;
+                text-shadow: none;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            /* --- Tražilica --- */
+            .trazilica {
+                width: 600px;
+                margin: 30px auto;
+                display: flex;
+            }
+            .trazilica input {
+                flex: 1;
+                padding: 10px;
+                border: 2px solid #006666;
+                border-right: none;
+                border-radius: 25px 0 0 25px;
+            }
+            .trazilica button {
+                padding: 10px 15px;
+                border: 2px solid #006666;
+                background: #006666;
+                border-radius: 0 25px 25px 0;
+                cursor: pointer;
+            }
+            .trazilica button img {
+                width: 20px;
+                height: auto;
+                vertical-align: middle;
+            }
+            .trazilica button:hover {
+                background: #004444;
+            }
+
+            /* --- Figma --- */
+            h1 {
+                margin-bottom: 20px;
+                text-align: left;
+                color: #006666;
+            }
+            h2 {
+                text-align: left;
+                margin: 30px auto 10px auto;
+                color: #006666;
+            }
+            h3 {
+                text-align: left;
+                margin-bottom: 30px;
+                color: #006666;
+            }
+            .logo {
+                width: 40px;
+                height: auto;
+                vertical-align: middle;
+            }
+            .figma-def, .moja-figma, .reg-i-prij, .unutar-app {
+                max-width: 1100px;
+                margin: 40px auto;
+                padding: 0 60px;
+                text-align: justify;
+            }
+            #figma-interface {
+                width: 90%;
+                height: auto;
+                display: block;
+                margin: 30px auto;
+                border-radius: 5px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                align-items: center;
+            }
+            video {
+                width: 50%;
+                height: auto;
+                display: block;
+                margin: 30px auto;
+                border-radius: 5px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                align-items: center;
+            }
+            .reg-slika img, .uspjeh-slika img, .figma-inside-app img, .figma-postavke img, .sudoku img {
+                width: 85%;
+                height: auto;
+                display: block;
+                margin: 30px auto;
+                border-radius: 5px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                align-items: center;
+            }
+            .figma-postavke img {
+                width: 25%;
+                height: auto;
+            }
+            .projekt-obj, .sudoku {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 50px;
+                flex-wrap: wrap;
+                margin-top: 30px;
+            }
+            .mojprojekt-opis, .figma-postavke p {
+                max-width: 500px;
+                background: #c7dcdc;
+                padding: 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            }
+            .figma-postavke {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 30px;
+                flex-wrap: wrap;
+            }
+
+            /* --- Footer --- */
+            .footer {
+                background-color: #5f9ea0;
+                color: white;
+                padding: 40px 20px;
+                margin-top: 80px;
+            }
+            .footer-content {
+                display: flex;
+                justify-content: center;
+                gap: 100px;
+                flex-wrap: wrap;
+            }
+            .footer-content p{
+                margin-bottom: 15px;
+            }
+            .footer-content a{
+                display: block;
+                color: white;
+                text-decoration: none;
+            }
+            .footer-content a:hover {
+                color: #345786;
+            }
+            .footer-desno ul {
+                list-style: square;
+                padding: 0;
+            }
+            .footer-desno li {
+                margin-bottom: 10px;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check:checked ~ .page {
+                background: #003e3f;
+                color: #e0e0e0
+            }
+            #dark-check:checked ~ .page .navbar,
+             #dark-check:checked ~ .page .footer {
+                background-color: #00292a;
+                color: #e0e0e0;
+            }
+            #dark-check:checked ~ .page .navbar .ime:hover,
+            #dark-check:checked ~ .page .navbar #projekti:hover,
+            #dark-check:checked ~ .page .navbar #about:hover {
+                color: #8fbbbc
+            }
+            #dark-check:checked ~ .page .trazilica input {
+                border: #002a2b;
+            }
+            #dark-check:checked ~ .page .trazilica button {
+                border: #002a2b;
+                background-color: #002a2b;
+            }
+             #dark-check:checked ~ .page .trazilica button:hover {
+                background-color: #001d1e;
+            }
+            #dark-check:checked ~ .page h1,
+            #dark-check:checked ~ .page h2,
+            #dark-check:checked ~ .page h3{
+                color: #6d999a;
+            }
+            #dark-check:checked ~ .page .figma-def,
+            #dark-check:checked ~ .page .reg-i-prij p,
+            #dark-check:checked ~ .page .unutar-app p,
+            #dark-check:checked ~ .page .sudoku{
+                color: #c7ddde;
+            }
+            #dark-check:checked ~ .page .mojprojekt-opis,
+            #dark-check:checked ~ .page .figma-postavke p{
+                background: #002a2b;
+            }
+            #dark-check:checked ~ .page .footer a:hover {
+                color: #8fbbbc
+            }
+    </style>
+    </head>
+    <body>
+        <input type="checkbox" id="dark-check">
+
+        <div class="page">
+
+            <nav class="navbar">
+                <a href="main.html" class="ime">Viktorija Đurđa</a>
+                <div class="desno">
+                    <label for="dark-check" class="dark-gumb"></label>
+                    <div class="dropdown">
+                        <a href="#" id="projekti">Projekti ▾</a>
+                        <div class="dropdown-content">
+                            <a href="foto.html">Fotografiranje</a>
+                            <a href="gimp.html">GIMP</a>
+                            <a href="inkscape.html">Inkscape</a>
+                            <a href="figma.html">Figma</a>
+                            <a href="main.html#github">Github/Netlify</a></li>
+                        </div>
+                    </div>
+                    <a href="about.html" id="about">About</a>
+                </div>
+            </nav>
+
+            <main>
+                <div class="trazilica">
+                    <input type="text" id="trazilicaInput" placeholder="Pretraži...">
+                    <button>
+                        <img src="search1.png" alt="Traži">
+                    </button>
+                </div>
+
+                </h1>
+                <div class="figma-def search-item">
+                    <h1 class="figma-naslov">
+                        Figma
+                        <img src="figma/Figma-logo.png" alt="Figma logo" class="logo">
+                    </h1>
+                    <p>Figma je web aplikacija za kolaborativno dizajniranje korisničkih sučelja. Usjmerena je na dizajn korisničkog sučelja i korisničkog iskustva. a naglaskom na suradnju u stvrnom vremenu koristeći razne alate za uređivanje vektorske grafike i izradu prototipa.</p>
+                    <p>Figma korisnicima omogućuje dizajna u tri različita načina: način dizajniranja, način prototipa i developer (dev) mode.</p>
+                    <p><b>Način dizajniranja</b> omogućuje korisnicima crtanje oblika, okvira i komponenti, primjenu stilova i mijenjanje slojeva za organiziranje platna.</p>
+                    <P><b>Način prototipa</b> stvara interaktivne tokove između okvira i zaslona tako da korisnici mogu testirati UX, povezivati ​​okvire za simulaciju navigacije i postavljati interakcije poput <i>"On click"</i> ili <i>"While hovering"</i>.</P>
+                    <p><b>Dev mode</b> omogućuje korisnicima pregled elemenata za isječke koda, preuzimanje resursa označenih za izvoz, pregled varijabli i tokena te jednostavan pregled dimenzija.</p>
+                    <img src="figma/figma-interface.png" alt="Figma sučelje" id="figma-interface">
+                </div>
+
+                <div class="moja-figma search-item">
+                    <h2>Moj projekt</h2>
+                    <div class="projekt-obj">
+                        <div class="figma-video">
+                            <video controls autoplay muted loop playsinline>
+                                <source src="figma/figma-video.mp4" alt="Video mog Figma projekta">
+                                Vaš preglednik ne podržava video tag.
+                            </video>
+                        </div>
+                        <div class="mojprojekt-opis">
+                            <p>Za moj projekt odlučila sam se za primjer mobilne aplikacije. Obožavam Sudoku i ostale tipove logičnih igra, pa je moj primjer apllikacije izmišljene kompanije 'MiniGames' koja sadrži više tipova logičnih igra.<br>
+                            Na vrhu sam napravila da se vidi vrijeme, notifikacije, postotak baterije i internet kao da je pravi mobitel.<br>
+                            Također sam dizajnirala jednostavan logo izmišljene kompanije 'MiniGames'.<br>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="reg-i-prij search-item">
+                        <h3>Registracija i prijava</h3>
+                        <div class="reg-slika">
+                            <img src="figma/reg-prij-uspjeh-figma.png" alt="Stranica za prijavu i registraciju">
+                        </div>
+                        <p>Prvi stranica koja se vidi je prijava korisnika. Korisnik se može prijaviti pomoću postojećeg korisničkog imena ili maila, te lozinke. Ispod se može vidjeti pitanje 'Zaboravili ste lozinku?' koje promjeni boju kada se preko njega pređe mišom.<br>
+                        <br>
+                        Ispod gumba 'Prijavi se' (koji također mijenja boju prelazom miša preko njega) nalaze se druge metode prijave, poput Googlea i Facebooka.
+                        </p>
+                        <p>Zatim se prjelazi na stranicu registracije gdje je potrebno unijeti korisničko ime, e-mail i lozinku. Ispod se nalazi pitanje 'Imate li već korisnički račun?' koje također mijenja boju kada se preko njega pređe mišom.<br>Klikom na polje za unos korisničkog imena, učitava se prijmer unošeni podatak. Klikom na gumb 'Registriraj se' prenosi se stranicu gdje se potvrđuje novo napravljeni račun.</p>
+                        <div class="uspjeh-slika">
+                            <video controls autoplay muted loop playsinline>
+                                <source src="figma/effect-figma2.mp4" alt="Gumbi sa hover effectom">
+                                Vaš preglednik ne podržava video tag.
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="unutar-app search-item">
+                        <h3>Untar aplikacije</h3>
+                        <div class="figma-inside-app">
+                            <img src="figma/figma-inside-app.png" alt="Početna stranica aplikacije, dnevni izazovi i profil">
+                        </div>
+
+                        <p>Na dnu se nalazi navigacijska traka koja omogućuje korisniku navigaciju između početne stranice, dnevnih izazova, 'Events' i profila.</p>
+                        <p><b>Početna stranica</b> aplikacije sadrži glavne igre koje korisnik može odabrati. Sastrane se nalaze ikone igara koje korisnik može odabrati. Pored svake ikone je naziv i opis igre. Na vrhu se nalazi logo kompanije i ikona za postavke.</p>
+                        <p><b>Dnevni izazovi</b> je dio aplikacije gdje se svaki dan za svaki mjesec nalaze novi izazovi. Uspješno završena igra daje korisniku jednu zvjedzdicu, nakon sakupljenja svih zvjezdica u mjesecu korisnik dobiva trofej.</p>
+                        <p>Na <b>profilu korisnika</b> se nalaze informacije o korisniku (korisničko ime, mail i profilna slika), statistika o uspješno završenim igrama i dnevnim izazovima.</p>
+                        
+                        <div class="figma-postavke">
+                            <img src="figma/postavke-figma.png" alt="Stranica postavki">
+                            <p>Na stranici postavki korisnik može mjenjati postavke za bolje iskustvo igranja, popout zvuka, automatskog zaključavanja, brojač tijekom igre, animirano bodovanje, poruka o statistikama, limit pogrešaka i automatska provjera pogrešaka.</p>
+                        </div>
+
+                        <div class="sudoku">
+                            <img src="figma/sudoku-figma.png" alt="Primjer Sudoku igre">
+                            <p>Na primjeru Sudoku igre, korisnik može odabrati između tri razine težine: Easy, Medium i Hard. Na vrhu se nalazi teškoća igre, ikona za postavke, brojač i ikona za pauzu. Na dnu gumb za poništavanje, izbrisavanje, bilješke, 'Hint' i brojevi za igranje Sudoka.<br>
+                            Klikom na 'Hint' igra se kompletno završi (sa točnim rješenjem!).</p>
+                        </div>
+                    </div>
+            </main>
+
+            <footer class="footer">
+                <div class="footer-content">
+
+                    <div class="footer-lijevo">
+                        <p>Multimedijalni sustavi</p>
+                        <p>Visual Studio Code</p>
+                        <p>HTML</p>
+                        <p>CSS</p>
+                        <p>JavaScript</p>
+                    </div>
+
+                    <div class="footer-desno">
+                        <p>Projekti:</p>
+                        <ul>
+                            <li><a href="foto.html">Fotografiranje</a></li>
+                            <li><a href="gimp.html">GIMP</a></li>
+                            <li><a href="inkscape.html">Inkscape</a></li>
+                            <li><a href="figma.html">Figma</a></li>
+                            <li><a href="main.html#github">Github/Netlify</a>
+                        </ul>
+                    </div>
+
+                    <div class="footer-sredina">
+                        <p>Napravila:</p>
+                        <p>Viktorija Đurđa</p>
+                        <p>vdurda@unipu.hr</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const input = document.getElementById("trazilicaInput");
+                const items = document.querySelectorAll(".search-item");
+
+                const noResult = document.createElement("p");
+                noResult.textContent = "Nema rezultata.";
+                noResult.style.textAlign = "center";
+                noResult.style.color = "#006666";
+                noResult.style.display = "none";
+                document.querySelector(".page").appendChild(noResult);
+
+                const button = document.querySelector(".trazilica button");
+
+                function highlightText(item, search) {
+                const safeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`(${search})`, "gi");
+                const textElems = item.querySelectorAll("p, h2, h3, li");
+                textElems.forEach(elem => {
+                    elem.innerHTML = elem.textContent.replace(regex, `<span style="background-color: #6d999a;">$1</span>`);
+                    });
+                }
+
+                function resetHighlight(item) {
+                    const spans = item.querySelectorAll("span");
+                    spans.forEach(span => {
+                        span.replaceWith(document.createTextNode(span.textContent));
+                    });
+                }
+
+                function filterItems() {
+                    const value = input.value.trim().toLowerCase();
+                    let found = false;
+
+                    items.forEach(item => {
+                        resetHighlight(item);
+
+                        if (value === "") {
+                            item.style.display = "block";
+                        } else if (item.textContent.toLowerCase().includes(value) && value !== "") {
+                            item.style.display = "block";
+                            highlightText(item, value);
+                            found = true;
+                        } else {
+                            item.style.display = "none";
+                        }
+                    });
+
+                    noResult.style.display = found || value === "" ? "none" : "block";
+                }
+
+                input.addEventListener("keyup", function(e) {
+                    filterItems();
+                    if (e.key === "Enter")
+                        button.click();
+                });
+
+                button.addEventListener("click", filterItems);
+            });
+        </script>
+    </body>
