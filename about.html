@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Viktorija Đurđa | About</title>
+        <link rel="icon" type="image/x-icon" href="bitmap.png">
+        <style>
+            /* --- Generalno --- */
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                background-color: #a7cacb;
+                line-height: 1.6;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            main {
+                flex: 1;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check {
+                display: none;
+            }
+            .dark-gumb {
+                background-color: #006666;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .dark-gumb:hover {
+                background-color: #004444;
+            }
+            .dark-gumb::before {
+                content: "Tamni način";
+            }
+            #dark-check:checked + .page .dark-gumb::before {
+                content: "Svijetli način";
+            }
+
+            /* --- Navigacijska traka --- */
+            .navbar {
+                display: flex;
+                align-items: center;
+                background-color: #5f9ea0;
+                padding: 15px 40px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            .navbar a{
+                color: white;
+                text-decoration: none;
+            }
+            .navbar a:hover {
+                color: #345786;
+            }
+            .ime {
+                font-weight: bold;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+            .desno {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+                font-weight: bold;
+                gap: 20px;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #e0eaea;
+                min-width: 160px;
+                border-radius: 5px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                margin-top: 5px;
+            }
+            .dropdown-content a {
+                color: #5f9ea0;
+                display: block;
+                padding: 10px 15px;
+                font-weight: normal;
+                text-shadow: none;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            /* --- About ---- */
+            h2 {
+                color: #006666;
+                margin-bottom: 15px;
+                margin-top: 20px;
+            }
+            .ja, .projekt {
+                margin-bottom: 40px;
+                text-align: center;
+            }
+            .ja p, .projekt p {
+                background: #c7dcdc;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                text-align: left;
+                max-width: 800px;
+                padding: 20px;
+                margin: 40px auto;
+                color: #006666;
+                margin-bottom: 15px;
+                line-height: 1.6;
+            }
+            iframe{
+                border: none;
+                border-radius: 5px;
+                margin: 20px auto 0 auto;
+                display: block;
+                max-width: 100%;
+                height: 400px;
+            }
+            .vsc-download {
+                text-decoration: none;
+                color: #00292a;
+            }
+            #vsc:hover {
+                color: #345786;
+                text-decoration: underline;
+                font-weight: bolder;
+            }
+            .logo{
+                width: 30px;
+                height: auto;
+                vertical-align: middle;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+            }
+            a img:hover {
+                transform: scale(1.05);
+            }
+
+            /* --- Footer --- */
+            .footer {
+                background-color: #5f9ea0;
+                color: white;
+                padding: 40px;
+            }
+            .footer-content {
+                display: flex;
+                justify-content: center;
+                gap: 100px;
+                flex-wrap: wrap;
+            }
+            .footer-content p{
+                margin-bottom: 15px;
+            }
+            .footer-content a{
+                display: block;
+                color: white;
+                text-decoration: none;
+            }
+            .footer-content a:hover {
+                color: #345786;
+            }
+            .footer-desno ul {
+                list-style: square;
+                padding: 0;
+            }
+            .footer-desno li {
+                margin-bottom: 10px;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check:checked ~ .page {
+                background: #003e3f;
+                color: #e0e0e0
+            }
+            #dark-check:checked ~ .page .navbar,
+            #dark-check:checked ~ .page .footer {
+                background-color: #00292a;
+                color: #e0e0e0;
+            }
+            #dark-check:checked ~ .page .navbar .ime:hover,
+            #dark-check:checked ~ .page .navbar #projekti:hover,
+            #dark-check:checked ~ .page .navbar #about:hover,
+            #dark-check:checked ~ .page .footer a:hover {
+                color: #8fbbbc
+            }
+            #dark-check:checked ~ .page .ja p,
+            #dark-check:checked ~ .page .projekt p {
+                color: #e0e0e0;
+                background: #002a2b;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+            #dark-check:checked ~ .page .vsc-download {
+                color: #e0e0e0;
+            }
+            #dark-check:checked ~ .page #vsc:hover {
+                color: #8fbbbc;
+            }
+            #dark-check:checked ~ .page h2 {
+                color: #6d999a
+            }
+        </style>
+    </head>
+    <body>
+        <input type="checkbox" id="dark-check">
+        <div class="page">
+            <nav class="navbar">
+                <a href="main.html" class="ime">Viktorija Đurđa</a>
+                <div class="desno">
+                    <label for="dark-check" class="dark-gumb"></label>
+                    <div class="dropdown">
+                        <a href="#" id="projekti">Projekti ▾</a>
+                        <div class="dropdown-content">
+                            <a href="foto.html">Fotografiranje</a>
+                            <a href="gimp.html">GIMP</a>
+                            <a href="inkscape.html">Inkscape</a>
+                            <a href="figma.html">Figma</a>
+                            <a href="main.html#github">Github/Netlify</a>
+                        </div>
+                    </div>
+                    <a href="about.html" id="about">About</a>
+                </div>
+            </nav>
+            <main>
+                <div class="ja">
+                    <h2>O meni</h2>
+                    <p>Ja sam Viktorija Đurđa, studentica 1. godine preddiplomskog studija Informatike na Sveučilištu Jurja Dobrile u Puli.</p>
+                    <iframe src="https://fipu.unipu.hr/" alt="stranica FIPU-a" width="600" height="400"></iframe>
+                </div>
+                <div class="projekt">
+                    <h2>O projektu</h2>
+                    <p>
+                        Ova stranica je izrađena kao projekt za predmet Multimedijalni sustavi. <br>
+                        Ovdje možete pronaći projekte koje sam izradila tijekom vježbi za kolegij Multimedijalni sustavi.
+                        Svaki projekt ima svoju sekciju s opisom i slikama.
+                        Za lakše kretanje koristite navigacijsku traku na vrhu stranice ili linkove u footer-u na dnu stranice.<br>
+                        <br> Cijeli projekt je napravljen u
+                        <a href="https://code.visualstudio.com/download" target="_blank" class="vsc-download">
+                            <span id="vsc">Visual Studio Code-u</span>
+                            <img src="about/Visual_Studio_Code_logo.png" alt="Visual Studio Code logo" class="logo"></a>
+                        pomoću HTML-a <img src="about/HTML5_logo.png" alt="HTML logo" class="logo">
+                        , CSS-a <img src="about/Official_CSS_Logo.png" alt="CSS logo" class="logo"><br>
+                        i JavaScript. <img src="about/js.logo.png" alt="JavaScript logo" class="logo">
+                    </p>
+                </div>
+            </main>
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-lijevo">
+                        <p>Multimedijalni sustavi</p>
+                        <p>Visual Studio Code</p>
+                        <p>HTML</p>
+                        <p>CSS</p>
+                        <p>JavaScript</p>
+                    </div>
+                    <div class="footer-desno">
+                        <p>Projekti:</p>
+                        <ul>
+                            <li><a href="foto.html">Fotografiranje</a></li>
+                            <li><a href="gimp.html">GIMP</a></li>
+                            <li><a href="inkscape.html">Inkscape</a></li>
+                            <li><a href="figma.html">Figma</a></li>
+                            <li><a href="main.html#github">Github/Netlify</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-sredina">
+                        <p>Napravila:</p>
+                        <p>Viktorija Đurđa</p>
+                        <p>vdurda@unipu.hr</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
