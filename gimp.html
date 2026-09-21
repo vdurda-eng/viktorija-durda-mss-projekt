@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Viktorija Đurđa | GIMP</title>
+        <link rel="icon" type="image/x-icon" href="bitmap.png">
+        <style>
+            /* --- Generalno --- */
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                background-color: #a7cacb;
+                line-height: 1.6;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            main {
+                flex: 1;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check {
+                display: none;
+            }
+            .dark-gumb {
+                background-color: #006666;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .dark-gumb:hover {
+                background-color: #004444;
+            }
+            .dark-gumb::before {
+                content: "Tamni način";
+            }
+            #dark-check:checked + .page .dark-gumb::before {
+                content: "Svijetli način";
+            }
+
+            /* --- Navigacijska traka --- */
+            .navbar {
+                display: flex;
+                align-items: center;
+                background-color: #5f9ea0;
+                padding: 15px 40px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            .navbar a{
+                color: white;
+                text-decoration: none;
+            }
+            .navbar a:hover {
+                color: #345786;
+            }
+            .ime {
+                font-weight: bold;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+            .desno {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+                font-weight: bold;
+                gap: 20px;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #e0eaea;
+                min-width: 160px;
+                border-radius: 5px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                margin-top: 5px;
+            }
+            .dropdown-content a {
+                color: #5f9ea0;
+                display: block;
+                padding: 10px 15px;
+                font-weight: normal;
+                text-shadow: none;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            /* --- GIMP --- */
+            .gimp-naslov-2 {
+                text-align: left;
+                margin-bottom: 20px;
+                color: #006666
+            }
+            .naslov-logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                justify-self: flex-start;
+            }
+            #logo {
+                width: 50px;
+                height: auto;
+            }
+            .gimp-def, .gimpprojekt-opis {
+                width: 1000px;
+                max-width: 90%;
+                text-align: left;
+                margin: 0 auto 50px;
+            }
+            .gimp-def img {
+                max-width: 800px;
+                width: 90%;
+                height: auto;
+                display: block;
+                margin: 30px auto;
+                border-radius: 5px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                align-items: center;
+            }
+            .gimp-projekt {
+                max-width: 900px;
+                margin: 0 auto 40px;
+                text-align: center;
+            }
+            .gimp-naslov3 {
+                margin-bottom: 20px;
+                text-align: center;
+                color: #006666;
+            }
+            .gimp-projekt-content {
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                align-items: flex-start;
+                text-align: left;
+                margin-bottom: 20px;
+            }
+            #gimpmajca{
+                max-width: 300px;
+                height: auto;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            .tekst-gimp {
+                max-width: 400px;
+                font-size: 16px;
+            }
+            .citat {
+                background: #c7dcdc;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                padding: 20px;
+                margin: 40px auto;
+                max-width: 500px;
+                display: flex;
+                align-items: center;
+            }
+
+            /* --- Footer --- */
+            .footer {
+                background-color: #5f9ea0;
+                color: white;
+                padding: 40px;
+            }
+            .footer-content {
+                display: flex;
+                justify-content: center;
+                gap: 100px;
+                flex-wrap: wrap;
+            }
+            .footer-content p{
+                margin-bottom: 15px;
+            }
+            .footer-content a{
+                display: block;
+                color: white;
+                text-decoration: none;
+            }
+            .footer-content a:hover {
+                color: #345786;
+            }
+            .footer-desno ul {
+                list-style: square;
+                padding: 0;
+            }
+            .footer-desno li {
+                margin-bottom: 10px;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check:checked ~ .page {
+            background: #003e3f;
+            color: #e0e0e0
+            }
+            #dark-check:checked ~ .page .navbar,
+            #dark-check:checked ~ .page .footer {
+                background-color: #00292a;
+                color: #e0e0e0;
+            }
+            #dark-check:checked ~ .page .navbar .ime:hover,
+            #dark-check:checked ~ .page .navbar #projekti:hover,
+            #dark-check:checked ~ .page .navbar #about:hover,
+            #dark-check:checked ~ .page .footer a:hover {
+                color: #8fbbbc
+            }
+            #dark-check:checked ~ .page .gimp-def p,
+            #dark-check:checked ~ .page .gimp-projekt p {
+                color: #c7ddde;
+            }
+            #dark-check:checked ~ .page h1,
+            #dark-check:checked ~ .page h2 {
+                color: #6d999a;
+            }
+            #dark-check:checked ~ .page .citat {
+                background: #002a2b;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+    </head>
+    <body>
+        <input type="checkbox" id="dark-check">
+        <div class="page">
+            <nav class="navbar">
+                <a href="main.html" class="ime">Viktorija Đurđa</a>
+                <div class="desno">
+                    <label for="dark-check" class="dark-gumb"></label>
+                    <div class="dropdown">
+                        <a href="#" id="projekti">Projekti ▾</a>
+                        <div class="dropdown-content">
+                            <a href="foto.html">Fotografiranje</a>
+                            <a href="gimp.html">GIMP</a>
+                            <a href="inkscape.html">Inkscape</a>
+                            <a href="figma.html">Figma</a>
+                            <a href="main.html#github">Github/Netlify</a>
+                        </div>
+                    </div>
+                    <a href="about.html" id="about">About</a>
+                </div>
+            </nav>
+            <main>
+                <div class="gimp-def search-item">
+                    <div class="gimp-naslov-2">
+                        <div class="naslov-logo">
+                            <h1>GIMP</h1>
+                            <img src="gimp/The_GIMP_icon.png" alt="GIMP logo" id="logo">
+                        </div>
+                    </div>
+
+                    <p>GIMP (GNU Image Manipulation Program) je besplatni program otvorenog koda za obradu slika.<br>Obično se koristi za uređivanje slika, retuširanje fotografija, crtanj i pretvaranje između različitih formata slikovnih datoteka.
+                    <br> GIMP je besplatno dostupan na Microsoft Windowsu, Linuxu i macOS-u. Projekt je neprofitna organizacija koju podržava zajednica volontera.<br>
+                    GIMP podržava dodatke i skripte, omogućujući korisnicima proširenje njegovih značajki i automatizaciju zadataka. Iako nije prvenstveno namijenjen crtanju, neki umjetnici i kreatori ga i dalje koriste u tu svrhu.</p>
+                    <img src="gimp/gimp-interface.png" alt="GIMP sučelje">
+                </div>
+                <div class="gimp-2">
+                    <div class="gimp-projekt">
+                        <h2 class="gimp-naslov3"> Moj projekt u GIMP-u </h2>
+                        
+                        <div class="gimp-projekt-content">
+                            <img id="gimpmajca" src="gimp/gimp.png" alt="Slika majce kreirane u GIMP programu." width="300" height="300">
+                        <p class="tekst-gimp">
+                            Za ovaj projekt sam napravila dizajn majice. <br> Zadatake je trebao imati barem tri sloja, tekst, barem jednu masku i jednu umetnutu sliku.<br> Ja sam se odlučila za dizajn koji uključuje sliku The Starry Night i citatom iz pisma Vincenta van Gogha bratu Theu. Rukave, donji dio majce i ovratniku ukrasiti tamno plavom bojom pomoću kista Cell 01.
+                        </p>
+                    </div>
+
+                    <cite class="citat">"Looking at the stars always makes me dream. Why, I ask myself, shouldn't the shining dots of the sky be as accessible as the black dots on the map of France? Just as we take a train to get to Tarascon or Rouen, we take death to reach a star."</cite>
+                </div>
+            </main>
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-lijevo">
+                        <p>Multimedijalni sustavi</p>
+                        <p>Visual Studio Code</p>
+                        <p>HTML</p>
+                        <p>CSS</p>
+                    </div>
+                    <div class="footer-desno">
+                        <p>Projekti:</p>
+                        <ul>
+                            <li><a href="foto.html">Fotografiranje</a></li>
+                            <li><a href="gimp.html">GIMP</a></li>
+                            <li><a href="inkscape.html">Inkscape</a></li>
+                            <li><a href="figma.html">Figma</a></li>
+                            <li><a href="main.html#github">Github/Netlify</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-sredina">
+                        <p>Napravila:</p>
+                        <p>Viktorija Đurđa</p>
+                        <p>vdurda@unipu.hr</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
