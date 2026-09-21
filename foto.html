@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Viktorija Đurđa | Fotografiranje </title>
+        <link rel="icon" type="image/x-icon" href="bitmap.png">
+        <style>
+            /* --- Generalno --- */
+            *{
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                background-color: #a7cacb;
+                line-height: 1.6;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            main {
+                flex: 1;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check {
+                display: none;
+            }
+            .dark-gumb {
+                background-color: #006666;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .dark-gumb:hover {
+                background-color: #004444;
+            }
+            .dark-gumb::before {
+                content: "Tamni način";
+            }
+            #dark-check:checked + .page .dark-gumb::before {
+                content: "Svijetli način";
+            }
+
+            /* --- Navigacijska traka --- */
+            .navbar {
+                display: flex;
+                align-items: center;
+                background-color: #5f9ea0;
+                padding: 15px 40px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            .navbar a{
+                color: white;
+                text-decoration: none;
+            }
+            .navbar a:hover {
+                color: #345786;
+            }
+            .ime {
+                font-weight: bold;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+            .desno {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+                font-weight: bold;
+                gap: 20px;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #e0eaea;
+                min-width: 160px;
+                border-radius: 5px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                margin-top: 5px;
+            }
+            .dropdown-content a {
+                color: #5f9ea0;
+                display: block;
+                padding: 10px 15px;
+                font-weight: normal;
+                text-shadow: none;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            /* --- Tražilica --- */
+            .trazilica {
+                max-width: 600px;
+                width: 90%;
+                margin: 30px auto;
+                display: flex;
+            }
+            .trazilica input {
+                flex: 1;
+                padding: 10px;
+                border: 2px solid #006666;
+                border-right: none;
+                border-radius: 25px 0 0 25px;
+                outline: none;
+            }
+            .trazilica button {
+                padding: 10px 15px;
+                border: 2px solid #006666;
+                background: #006666;
+                border-radius: 0 25px 25px 0;
+                cursor: pointer;
+            }
+            .trazilica button img {
+                width: 20px;
+                height: auto;
+                vertical-align: middle;
+            }
+            .trazilica button:hover {
+                background: #004444;
+            }
+
+            /* --- Foto --- */
+            h1 {
+                margin: 30px auto 10px auto;
+                max-width: 800px;
+                color: #006666;
+            }
+            h2 {
+                margin-top: 10px;
+                color: #006666;
+            }
+            .fokus, .ekspozicija, .iso, .ev, .wb {
+                background-color: #c7dcdc;
+                margin: 20px auto;
+                padding: 20px;
+                max-width: 800px;
+                border-radius: 5px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+            .ekspozicija img, .fokus img, .iso img, .ev img, .wb img {
+                margin-top: 20px;
+                max-width: 750px;
+                height: auto;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            
+            /* --- Footer --- */
+            .footer {
+                background-color: #5f9ea0;
+                color: white;
+                padding: 40px;
+            }
+            .footer-content {
+                display: flex;
+                justify-content: center;
+                gap: 100px;
+                flex-wrap: wrap;
+            }
+            .footer-content p{
+                margin-bottom: 15px;
+            }
+            .footer-content a{
+                display: block;
+                color: white;
+                text-decoration: none;
+            }
+            .footer-content a:hover {
+                color: #345786;
+            }
+            .footer-desno ul {
+                list-style: square;
+                padding: 0;
+            }
+            .footer-desno li {
+                margin-bottom: 10px;
+            }
+
+            /* --- Tamni način --- */
+            #dark-check:checked ~ .page {
+                background: #003e3f;
+                color: #e0e0e0
+            }
+            #dark-check:checked ~ .page .navbar,
+            #dark-check:checked ~ .page .footer {
+                background-color: #00292a;
+                color: #e0e0e0;
+            }
+            #dark-check:checked ~ .page .navbar .ime:hover,
+            #dark-check:checked ~ .page .navbar #projekti:hover,
+            #dark-check:checked ~ .page .navbar #about:hover,
+            #dark-check:checked ~ .page .footer a:hover {
+                color: #8fbbbc
+            }
+            #dark-check:checked ~ .page .trazilica input {
+                border: #002a2b;
+            }
+            #dark-check:checked ~ .page .trazilica button {
+                border: #002a2b;
+                background-color: #002a2b;
+            }
+            #dark-check:checked ~ .page .trazilica button:hover {
+                background-color: #001d1e;
+            }
+            #dark-check:checked ~ .page .ekspozicija p,
+            #dark-check:checked ~ .page .fokus p,
+            #dark-check:checked ~ .page .iso p,
+            #dark-check:checked ~ .page .ev p,
+            #dark-check:checked ~ .page .wb p {
+                color: #c7ddde;
+            }
+            #dark-check:checked ~ .page h1,
+            #dark-check:checked ~ .page h2 {
+                color: #6d999a;
+            }
+            #dark-check:checked ~ .page .ekspozicija,
+            #dark-check:checked ~ .page .fokus,
+            #dark-check:checked ~ .page .iso,
+            #dark-check:checked ~ .page .ev,
+            #dark-check:checked ~ .page .wb {
+                background: #002a2b;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+    </head>
+    <body>
+        <input type="checkbox" id="dark-check">
+        <div class="page">
+            <nav class="navbar">
+                <a href="main.html" class="ime">Viktorija Đurđa</a>
+                <div class="desno">
+                    <label for="dark-check" class="dark-gumb"></label>
+                    <div class="dropdown">
+                        <a href="#" id="projekti">Projekti ▾</a>
+                        <div class="dropdown-content">
+                            <a href="foto.html">Fotografiranje</a>
+                            <a href="gimp.html">GIMP</a>
+                            <a href="inkscape.html">Inkscape</a>
+                            <a href="figma.html">Figma</a>
+                            <a href="main.html#github">Github/Netlify</a>
+                        </div>
+                    </div>
+                    <a href="about.html" id="about">About</a>
+                </div>
+            </nav>
+            <div class="trazilica">
+                    <input type="text" id="trazilicaInput" placeholder="Pretraži...">
+                    <button>
+                        <img src="search1.png" alt="Traži">
+                    </button>
+            </div>
+            
+            <h1 id="foto-naslov" class="foto search-item">Fotografiranje</h1>
+
+            <div class="ekspozicija search-item">
+                <h2>Ekspozicija</h2>
+                <p>Ekspoziciju u fotografiranju kontrolira brzina zatvarača (shutter speed), tj. vrijeme tijekom kojeg je zatvarač fotoaparata otvoren i omogućuje svijetlost da doće do senzora ili vrijeme gdje fotoaparat snimi fotografiju.</p><br>
+                <p><b>Kratka ekspozicija</b> je brza brzina ili kratko vrijeme otvorenog zatvarača. Koristi se za zamrzivanje pokreta, postizanje oštrine, smanjenje utjecaja podhrtavanja i u uvjetima jake svjetlost. Obično se fotografiraju objekti u pokretu.</p>
+                <p><b>Duga ekspozicija</b> je spora brzina ili dulje vrijeme otvorenog zatvarača. Koristi se smanjenje šuma, zamagljivanje, čišće slike, efekt magle, tragovi svijetla i efekti pokreta.</p>
+                <img src="foto/ekspozicija2.jpg" alt="Primjeri eksozicija">
+            </div>
+            <div class="fokus search-item">
+                <h2>Fokus</h2>
+                <p>Određuju oštrinu i jasnoću subjketa na fotografiji. Elementi koji nisu u fokusu su obično zamagljeni. Koristi se za isticanje objekata. Može biti <b>Automatski (AF)</b> ili <b>Ručni fokus (MF)</b></p>
+                <img src="foto/fokus.jpg" alt="Primjeri drugačijih fokusa">
+            </div>
+            <div class="iso search-item">
+                <h2>ISO osjetljivost (sensitivity)</h2>
+                <p>
+                    <b>ISO</b> je razina osjetljivosti senzora na svjetlo. Viši ISO znači veću osjetljivost (veću ekspoziciju), niži ISO znači manju osjetljivost (nižu ekspoziciju).<br>
+                    <br> <b>Visoki ISO</b> se koristi u sitacijama s manje svijetla, slika ima povećani šum.
+                    <br> <b>Niski ISO</b> se koristi u sitacijama s puno svijetla, slika ima veću oštrinu i manje šuma.
+                </p>
+                <img src="foto/iso.jpg" alt="Primjeri drugačijih ISO-a">
+            </div>
+            <div class="ev search-item">
+                <h2>EV - ekspozicijski indeks (Exposure Value)</h2>
+                <p>
+                    Opis ukupne količine svjetlosti koja ulazi u fotoaparat, tj. kombinacija brzine zatvarača i otvora blende fotoaparata.
+                    Niži brojevi označavaju vrlo slabo osvjetljenje, dok viši brojevi označavaju jaku, izravnu sunčevu svjetlost.
+                </p>
+                <img src="foto/ev.jpg"Primjeri EV-a>
+            </div>
+            <div class="wb search-item">
+                <h2>Balans bijele boje (White Balance)</h2>
+                <p>
+                    Postavka koja prilagođava boje kako bi bijela boja izgledala prirodno i neutralno. Mjeri se u <b>Kelvinima (K)</b> i opisuje toplinu ili hladnoću svijetla <br>
+                    Niže vrijednosti označavaju hladnija svijetla sa plavim tonovima, dok više vrijednosti označavaju toplija svijetla sa narančastim tonovima.
+                </p>
+                <img src="foto/White-balance.jpg" alt="Primjeri balansa bijele boje">
+            </div>
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-lijevo">
+                        <p>Multimedijalni sustavi</p>
+                        <p>Visual Studio Code</p>
+                        <p>HTML</p>
+                        <p>CSS</p>
+                        <p>JavaScript</p>
+                    </div>
+                    <div class="footer-desno">
+                        <p>Projekti:</p>
+                        <ul>
+                            <li><a href="foto.html">Fotografiranje</a></li>
+                            <li><a href="gimp.html">GIMP</a></li>
+                            <li><a href="inkscape.html">Inkscape</a></li>
+                            <li><a href="figma.html">Figma</a></li>
+                            <li><a href="main.html#github">Github/Netlify</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-sredina">
+                        <p>Napravila:</p>
+                        <p>Viktorija Đurđa</p>
+                        <p>vdurda@unipu.hr</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const input = document.getElementById("trazilicaInput");
+                const items = document.querySelectorAll(".search-item");
+
+                const noResult = document.createElement("p");
+                noResult.textContent = "Nema rezultata.";
+                noResult.style.textAlign = "center";
+                noResult.style.color = "#006666";
+                noResult.style.display = "none";
+                document.querySelector(".page").insertBefore(noResult, document.querySelector(".trazilica").nextSibling)
+
+                const button = document.querySelector(".trazilica button");
+
+                function highlightText(item, search) {
+                const regex = new RegExp(`(${search})`, "gi");
+                const textElems = item.querySelectorAll("p, h2, li");
+                textElems.forEach(elem => {
+                    elem.innerHTML = elem.textContent.replace(regex, `<span style="background-color: #6d999a;">$1</span>`);
+                    });
+                }
+
+                function resetHighlight(item) {
+                    const spans = item.querySelectorAll("span");
+                    spans.forEach(span => {
+                        span.replaceWith(document.createTextNode(span.textContent));
+                    });
+                }
+
+                function filterItems() {
+                    const value = input.value.trim().toLowerCase();
+                    let found = false;
+
+                    items.forEach(item => {
+                        resetHighlight(item);
+
+                        if (value === "") {
+                            item.style.display = "block";
+                        } else if (item.textContent.toLowerCase().includes(value) && value !== "") {
+                            item.style.display = "block";
+                            highlightText(item, value);
+                            found = true;
+                        } else {
+                            item.style.display = "none";
+                        }
+                    });
+
+                    noResult.style.display = found || value === "" ? "none" : "block";
+                }
+
+                input.addEventListener("keyup", function(e) {
+                    filterItems();
+                    if (e.key === "Enter") {
+                        button.click();
+                    }
+            });
+
+                button.addEventListener("click", filterItems);
+            })
+                input.addEventListener("keyup", function() {
+                    let value = this.value.toLowerCase();
+
+                    items.forEach(function(item) {
+                        if (item.textContent.toLowerCase().includes(value)) {
+                            item.style.display = "block";
+                        } else {
+                            item.style.display = "none";
+                        }
+                    });
+                });
+        </script>
+    </body>
