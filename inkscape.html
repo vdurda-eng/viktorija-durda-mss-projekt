@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Viktorija Đurđa | Inkscape</title>
+        <link rel="icon" type="image/x-icon" href="bitmap.png">
+        <style>
+            #dark-check {
+                display: none;
+            }
+            .dark-gumb {
+                background-color: #006666;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .dark-gumb:hover {
+                background-color: #004444;
+            }
+            .dark-gumb::before {
+                content: "Tamni način";
+            }
+            #dark-check:checked + .page .dark-gumb::before {
+                content: "Svijetli način";
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                background-color: #a7cacb;
+                margin: 0;
+                line-height: 1.6;
+            }
+            .navbar {
+                display: flex;
+                align-items: center;
+                background-color: #5f9ea0;
+                padding: 15px 40px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            .navbar a{
+                color: white;
+                text-decoration: none;
+                transition: 0.3s ease;
+            }
+            .navbar a:hover {
+                color: #345786;
+            }
+            .ime {
+                font-weight: bold;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+            .desno {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+                font-weight: bold;
+                gap: 20px
+            }
+            .desno a {
+                margin-left: 15px;
+                text-shadow: #345786 1px 1px 2px;
+                font-size: 18px;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #e0eaea;
+                min-width: 160px;
+                border-radius: 5px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                margin-top: 5px;
+            }
+            .dropdown-content a {
+                color: #5f9ea0;
+                display: block;
+                padding: 10px 15px;
+                font-weight: normal;
+                text-shadow: none;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            h1 {
+                margin: 30px auto 10px auto;
+                max-width: 800px;
+                color: #006666;
+            }
+            h2 {
+                text-align: left;
+                margin: 30px auto 10px auto;
+                color: #006666;
+            }
+            .inkscape-def {
+                background-color: #c7dcdc;
+                margin: 20px auto;
+                padding: 20px;
+                max-width: 800px;
+                border-radius: 5px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+            .izvor-wiki {
+                color: #003e3f;
+            }
+            #external-link {
+                width: 15px;
+                height: 15px;
+                vertical-align: text-bottom;
+            }
+            .izvor-wiki:hover {
+                color :#00292a;
+            }
+            #logo {
+                width: 40px;
+                height: auto;
+                vertical-align: middle;
+                margin-left: 8px;
+                transition: transform 0.3s ease;
+            }
+            .inkscape-def img {
+                margin-top: 20px;
+                max-width: 750px;
+                height: auto;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            .moj-projekt img {
+                max-width: 300px;
+                height: auto;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            .moj-projekt, .og {
+                background: #c7dcdc;
+                border-radius: 5px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin: 40px auto;
+                max-width: 800px;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                transition: transform 0.3s ease;
+            }
+            .projekt-text {
+                max-width: 405px;
+                text-align: left;
+            }
+            .footer {
+                background-color: #5f9ea0;
+                color: white;
+                padding: 40px;
+            }
+            .footer-content {
+                display: flex;
+                justify-content: center;
+                gap: 100px;
+                flex-wrap: wrap;
+            }
+            .footer-content p{
+                margin-bottom: 15px;
+            }
+            .footer-content a{
+                display: block;
+                color: white;
+                text-decoration: none;
+            }
+            .footer-content a:hover {
+                color: #345786;
+            }
+            .footer-desno ul {
+                list-style: square;
+                padding: 0;
+            }
+            .footer-desno li {
+                margin-bottom: 10px;
+            }
+            #dark-check:checked ~ .page {
+                background: #003e3f;
+                color: #e0e0e0
+            }
+            #dark-check:checked ~ .page .navbar {
+                background-color: #00292a;
+            }
+            #dark-check:checked ~ .page .navbar .ime:hover,
+            #dark-check:checked ~ .page .navbar #projekti:hover,
+            #dark-check:checked ~ .page .navbar #about:hover {
+                color: #8fbbbc
+            }
+            #dark-check:checked ~ .page .moj-projekt,
+            #dark-check:checked ~ .page .inkscape-def {
+                background: #002a2b;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+            #dark-check:checked ~ .page h1,
+            #dark-check:checked ~ .page h2 {
+                color: #6d999a;
+            }
+            #dark-check:checked ~ .page .footer {
+                background: #00292a;
+                color: #e0e0e0;
+            }
+            #dark-check:checked ~ .page .footer a:hover {
+                color: #8fbbbc
+            }
+        </style>
+    </head>
+    <body>
+        <input type="checkbox" id="dark-check">
+        <div class="page">
+            <nav class="navbar">
+                <a href="main.html" class="ime">Viktorija Đurđa</a>
+                <div class="desno">
+                    <label for="dark-check" class="dark-gumb"></label>
+                    <div class="dropdown">
+                        <a href="#" id="projekti">Projekti ▾</a>
+                        <div class="dropdown-content">
+                            <a href="foto.html">Fotografiranje</a>
+                            <a href="gimp.html">GIMP</a>
+                            <a href="inkscape.html">Inkscape</a>
+                            <a href="figma.html">Figma</a>
+                            <a href="main.html#github">Github/Netlify</a>
+                        </div>
+                    </div>
+                    <a href="about.html" id="about">About</a>
+                </div>
+            </nav>
+            <main>
+                <h1>
+                    Inkscape
+                    <img src="inkscape/Inkscape_Logo.png" alt="Inkscape logo" id="logo">
+                </h1>
+                <div class="inkscape-def search-item">
+                    <p>
+                        <b>Inkscape</b> je besplatni softverski program za uređivanje vektorske grafike otvorenog koda, objavljen pod GNU General Public License (GPL) 2.0 ili novijom verzijom. Koristi se za umjetničke i tehničke ilustracije poput crtanih filmova, isječaka, logotipa, tipografije i dijagrama. <br>
+                        <br> Koristi vektorsku grafiku kako bi omogućio oštre ispise i prikaze u neograničenoj rezoluciji i nije vezan za fiksni broj piksela poput rasterske grafike.<br>
+                        <br> Inkscape može prikazati primitivne vektorske oblike (npr. pravokutnike, elipse, poligone, lukove, spirale, zvijezde i 3D okvire) i tekst. Ovi objekti mogu se ispuniti punim bojama, uzorcima i radijalnim ili linearnim gradijentima boja, a njihovi rubovi mogu se ocrtavati, oboje s podesivom prozirnošću.<br>
+                        <br> Također je podržano ugrađivanje i opcionalno praćenje rasterske grafike, što omogućuje uređivaču stvaranje vektorske grafike iz fotografija i drugih rasterskih izvora. Stvoreni oblici mogu se dalje manipulirati geometrijskim transformacijama, kao što su pomicanje, rotiranje, skaliranje i naginjanje.
+                    </p>
+
+                    <footer class="izvor">Izvor:
+                        <a href="https://en.wikipedia.org/wiki/Inkscape" class="izvor-wiki">
+                            Wikipedia 
+                            <img src="external-link.svg" id="external-link">
+                        </a>
+                    </footer>
+
+                    <img src="inkscape/inkscape-interface.png" alt="Sučelje Inkscape-a.">
+                </div>
+                <div class="moj-projekt search-item">
+                    <div class="projekt-text">
+                        <h2>Moj projekt</h2>
+                        <p>
+                            Zadatak je bio da napravimo ili uredimo postojeći logotip i zadovoljavati sljedeće uvjete: barem 3 sloja i primjena isječka ili maske.
+                            <br> Ja sam se odlučila za postojeći logotip ptice. Obojala sam ga isječkom i iznad dodala riječ "πουλί" (poulí) što na Grčkom znači ptica.
+                        </p>
+                    </div>
+                    <img src="inkscape/inkscape.png" alt="Moj projekt u Inkscape-u.">
+                    <div class="obj-tekst">
+                        <p>
+                        </p>
+                    </div>
+                </div>
+            </main>
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-lijevo">
+                        <p>Multimedijalni sustavi</p>
+                        <p>Visual Studio Code</p>
+                        <p>HTML</p>
+                        <p>CSS</p>
+                    </div>
+                    <div class="footer-desno">
+                        <p>Projekti:</p>
+                        <ul>
+                            <li><a href="foto.html">Fotografiranje</a></li>
+                            <li><a href="gimp.html">GIMP</a></li>
+                            <li><a href="inkscape.html">Inkscape</a></li>
+                            <li><a href="figma.html">Figma</a></li>
+                            <li><a href="main.html#github">Github/Netlify</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-sredina">
+                        <p>Napravila:</p>
+                        <p>Viktorija Đurđa</p>
+                        <p>vdurda@unipu.hr</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </body>
